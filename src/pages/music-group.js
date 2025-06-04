@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import { Container, Alert, Button } from 'react-bootstrap';
-import SearchBar from '../components/SearchBar';
-import MusicGroupList from '../components/MusicGroupList';
-import CustomPagination from '../components/CustomPagination';
-import { fetchMusicGroups } from '../services/app';
+import { Container, Row, Col } from 'react-bootstrap';
+import { fetchMusicGroups } from '../services/api';
+import MusicGroupList from '../components/music-group-list';
+import SearchBar from '../components/search-bar';
+import CustomPagination from '../components/custom-pagination';
+import ErrorMessage from '../components/error-message';
 
 function MusicGroup() {
   const [groups, setGroups] = useState([]);
@@ -13,6 +14,7 @@ function MusicGroup() {
   const [totalResults, setTotalResults] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [showSearchInput, setShowSearchInput] = useState(false);
   const groupsPerPage = 10;
 
   const fetchGroups = async (page = currentPage, search = searchTerm) => {
@@ -59,6 +61,14 @@ function MusicGroup() {
     }
   };
 
+  const toggleSearch = () => {
+    setShowSearchInput(!showSearchInput);
+    if (showSearchInput) {
+       setSearchTerm('');
+       handleSearch('');
+    }
+  };
+
   if (loading) {
     return (
       <Container className="text-center mt-4">
@@ -72,38 +82,42 @@ function MusicGroup() {
 
   if (error) {
     return (
-      <Container>
-        <Alert variant="danger" className="mt-4">
-          <Alert.Heading>Error Loading Music Groups</Alert.Heading>
-          <p>{error}</p>
-          <hr />
-          <div className="d-flex justify-content-end">
-            <Button variant="primary" onClick={() => fetchGroups()}>
-              Try Again
-            </Button>
-          </div>
-        </Alert>
-      </Container>
+      <ErrorMessage 
+        error={error}
+        title="Error Loading Music Groups"
+        onRetry={fetchGroups}
+      />
     );
   }
 
   return (
     <Container>
-      <h1 className="mb-4">Music Groups</h1>
-      
-      <SearchBar
-        searchTerm={searchTerm}
-        setSearchTerm={handleSearchTermChange}
-        onSearch={() => handleSearch(searchTerm)}
-        totalResults={totalResults}
-      />
+      <Row className="align-items-center mb-4">
+        <Col>
+          <h1>Music Groups</h1>
+        </Col>
+        <Col xs="auto">
+          <SearchBar
+            searchTerm={searchTerm}
+            setSearchTerm={handleSearchTermChange}
+            onSearch={handleSearch}
+            totalResults={totalResults}
+            showSearchInput={showSearchInput}
+            setShowSearchInput={setShowSearchInput}
+            toggleSearch={toggleSearch}
+          />
+        </Col>
+      </Row>
 
       {groups.length === 0 ? (
-        <Alert variant="info">No music groups found matching your search criteria.</Alert>
+        <ErrorMessage 
+          error="No music groups found matching your search criteria."
+          title="No Results"
+          variant="info"
+        />
       ) : (
         <>
           <MusicGroupList groups={groups} />
-          
           <CustomPagination
             currentPage={currentPage}
             totalPages={totalPages}

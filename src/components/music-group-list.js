@@ -6,23 +6,23 @@ function MusicGroupList({ groups }) {
   const navigate = useNavigate();
 
   return (
-    <Card className="shadow-sm">
+    <Card className="shadow-sm mx-auto">
       <Table striped bordered hover responsive>
         <thead>
           <tr>
-            <th>Group Name</th>
-            <th>Action</th>
+            <th className="text-center">Music Groups</th>
+            <th className="text-center"></th>
           </tr>
         </thead>
         <tbody>
           {groups.map((group) => (
             <tr key={group.musicGroupId}>
-              <td>{group.name}</td>
-              <td>
+              <td className="text-center">{group.name}</td>
+              <td className="text-center">
                 <Button
-                  variant="outline-primary"
+                  variant="info"
                   size="sm"
-                  onClick={() => navigate(`/groups/${group.musicGroupId}`)}
+                  onClick={() => navigate(`/music-groups/${group.musicGroupId}`)}
                 >
                   View Details
                 </Button>
