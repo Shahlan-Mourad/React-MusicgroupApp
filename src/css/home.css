@@ -1,11 +1,11 @@
 .home-container {
   min-height: 100vh;
-  background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+  background: var(--bs-body-bg);
 }
 
 .welcome-section {
   padding: 2rem;
-  background: white;
+  background: var(--card-bg);
   border-radius: 1rem;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
   margin-bottom: 2rem;
@@ -32,17 +32,17 @@
 }
 
 .feature-card h3 {
-  color: #2c3e50;
+  color: var(--text-color);
   margin-bottom: 1rem;
 }
 
 .feature-card p {
-  color: #6c757d;
+  color: var(--text-color);
   margin-bottom: 1.5rem;
 }
 
 .developer-info {
-  border-top: 1px solid #dee2e6;
+  border-top: 1px solid var(--border-color);
   padding-top: 1rem;
   margin-top: 2rem;
   display: inline-block;
